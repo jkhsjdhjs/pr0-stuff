@@ -1,0 +1,140 @@
+<?php
+	function getNewData($id, $base) {
+		$items = json_decode(@file_get_contents($base . "api/items/get?newer=" . urlencode((string)$id)), true);
+		echo "$id<br>";
+		var_dump($items);
+		echo "<br><br><br><br>";
+		sleep(0.01);
+		if(is_array($items) && array_key_exists('items', $items)) {
+			return $items;
+		}
+		else {
+			return false;
+		}
+	}
+
+	if($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['img_link'])) {
+		$base_url = "http://pr0gramm.com/";
+		$img = $_POST['img_link'];
+		$found = false;
+		$err_flag = false;
+		if(preg_match('~img\.pr0gramm\.com\/(\d+)\/(\d+)\/(?:(\d+)\/)?(.*(?:jpg|png|gif|webm))~i', $img, $matches)) {
+			$searched_year = intval($matches[1]);
+			$searched_month = intval($matches[2]);
+			if($matches[3] != "") {
+				$searched_day = intval($matches[3]);
+			}
+			$searched_pic = strtolower($matches[4]);
+			$items = json_decode(@file_get_contents($base_url . "api/items/get"), true);
+			if(is_array($items) && array_key_exists('items', $items)) {
+				$item = array_values($items['items'])[0];
+				if(is_array($item) && array_key_exists('id', $item) && array_key_exists('image', $item)) {
+					$current_searching = intval($item['id']);
+					if(preg_match('~(\d+)\/(\d+)\/(?:(\d+)\/)?(.*(?:jpg|png|gif|webm))~i', $item['image'], $matches)) {
+						$newer = false;
+						$washere = false;
+						$washere2 = false;
+						while(!$found) {
+							if($newer) {
+								if((int)($current_searching / 2) < 1) {
+									$current_searching += 1;
+								}
+								else {
+									$current_searching += (int)($current_searching / 2);
+								}
+							}
+							else {
+								if((int)($current_searching / 2) < 1) {
+									$current_searching -= 1;
+								}
+								else {
+									$current_searching -= (int)($curren_searching / 2);
+								}
+							}
+							$searching = getNewData($current_searching, $base_url);
+							foreach($searching['items'] as $item) {
+								if(preg_match('~(\d+)\/(\d+)\/(?:(\d+)\/)?(.*(?:jpg|png|gif|webm))~i', $item['image'], $matches)) {
+									$current_year = intval($matches[1]);
+									$current_month = intval($matches[2]);
+									$current_day = intval($matches[3]);
+									$current_pic = strtolower($matches[4]);
+									if($current_year == $searched_year && $current_month == $searched_month && $current_day == $searched_day && $current_pic == $searched_pic) {
+										echo $item['id'];
+										$found = true;
+									}
+								}
+							}
+							if($current_year > $searched_year) {
+								$newer = false;
+							}
+							else if($current_year < $searched_year) {
+								$newer = true;
+							}
+							else {
+								if($current_month > $searched_month) {
+									$newer = false;
+								}
+								else if($current_month < $searched_month) {
+									$newer = true;
+								}
+								else {
+									if($current_day > $searched_day) {
+										$newer = false;
+										if($washere) {
+											$washere2 = true;
+										}
+									}
+									else if($current_day < $searched_day) {
+										$newer = true;
+									}
+									else {
+										if($washere2) {
+											$newer = false;
+										}
+										else {
+											$newer = true;
+										}
+										$washere = true;
+									}
+								}
+							}
+						}
+					}
+					else {
+						$err_flag = true;
+					}
+				}
+				else {
+					$err_flag = true;
+				}
+			}
+			else {
+				$err_flag = true;
+			}
+		}
+		else {
+			echo "Doesn't match link format!";
+		}
+	}
+?>
+<!DOCTYPE html>
+<html>
+	<head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <title>
+            >_ Pr0gramm IMG Link Reverse Lookup v1.0
+        </title>
+	</head>
+	<body>
+	    <header>
+            <h2>>_ Pr0gramm IMG Link Reverse Lookup v1.0</h2><br>
+            Gibt den Link zum Post anhand des Bildlinks (<code>http(s)://img.pr0gramm.com/...</code>) aus.
+        </header>
+        <br>Format: <code>(http(s)://)img.pr0gramm.com/jahr/monat/bild</code>
+        <br><br>
+        <form action="" method="POST">
+            <input type="text" name="img_link" size="60" placeholder="IMG Link">
+            <input type="submit" value="Link zum Post ausgeben">
+        </form>
+	</body>
+</html>
