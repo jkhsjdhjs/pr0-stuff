@@ -10,15 +10,15 @@ if(!(isset($_GET["id"]) xor isset($_GET["file"])))
     exit_response(400, "bad_request");
 
 if(isset($_GET["id"])) {
-    $id = (int) $_GET["id"];
-    if($id < 1 || (string) $id !== $_GET["id"])
+    $val = (int) $_GET["id"];
+    if($val < 1 || (string) $val !== $_GET["id"])
         exit_response(400, "invalid_field_value", "id");
     $col = "post_id";
 }
 else {
     if(!preg_match("/(\d{4}.+\..+)/", $_GET["file"], $matches))
         exit_response(400, "invalid_field_value", "file");
-    $file = $matches[1];
+    $val = $matches[1];
     $col = "file";
 }
 
@@ -26,7 +26,7 @@ $dbh = db_conn($pgsql_dsn);
 
 $query = $dbh->prepare("SELECT * FROM reverse_lookup WHERE " . $col . " = ?");
 
-if(!$query->execute([$col === "file" ? $file : $id]))
+if(!$query->execute([$val]))
     exit_response(500, "database_error");
 
 $row = $query->fetch(PDO::FETCH_OBJ);
