@@ -14,6 +14,7 @@
  * 1.8: added Changelog, added vid.pr0gramm.com support
  * 1.9: added mp4 support
  * 1.11: change update/download url
+ * 1.12: change update/download url to v2.0 script
  * 2.0: complete rewrite without jquery
 */
 
