@@ -4,9 +4,9 @@
 // @namespace   jkhsjdhjs
 // @description Optional redirect from IMG/VID links (img/vid.pr0gramm.com) to their respective post
 // @include     /^https?://(?:vid|img).pr0gramm.com.+\..+/
-// @version     1.11
-// @updateURL   https://github.com/jkhsjdhjs/pr0-stuff/raw/master/img_old_link_lookup.user.js
-// @downloadURL https://github.com/jkhsjdhjs/pr0-stuff/raw/master/img_old_link_lookup.user.js
+// @version     1.12
+// @updateURL   https://github.com/jkhsjdhjs/pr0-stuff/raw/master/direct_link_reverse_lookup.user.js
+// @downloadURL https://github.com/jkhsjdhjs/pr0-stuff/raw/master/direct_link_reverse_lookup.user.js
 // @icon        http://pr0gramm.com/media/pr0gramm-favicon.png
 // ==/UserScript==
 
@@ -14,6 +14,7 @@
  * 1.8: added Changelog, added vid.pr0gramm.com support
  * 1.9: added mp4 support
  * 1.11: change update/download url
+ * 1.12: change update/download url to v2.0 script
 */
 
 //"Load jQuery if not loaded" Code from: https://css-tricks.com/snippets/jquery/load-jquery-only-if-not-present/
