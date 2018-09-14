@@ -4,7 +4,7 @@
 // @namespace   jkhsjdhjs
 // @description Optional redirect from IMG/VID links (img/vid.pr0gramm.com) to their respective post
 // @include     /^https?://(?:full|vid|img).pr0gramm.com.+\..+/
-// @version     2.0
+// @version     2.1
 // @updateURL   https://github.com/jkhsjdhjs/pr0-stuff/raw/master/img_old_link_lookup.user.js
 // @downloadURL https://github.com/jkhsjdhjs/pr0-stuff/raw/master/img_old_link_lookup.user.js
 // @icon        http://pr0gramm.com/media/pr0gramm-favicon.png
