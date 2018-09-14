@@ -3,7 +3,7 @@
 // @author      jkhsjdhjs
 // @namespace   jkhsjdhjs
 // @description Optional redirect from IMG/VID links (img/vid.pr0gramm.com) to their respective post
-// @include     /^https?://(?:vid|img).pr0gramm.com.+\..+/
+// @include     /^https?://(?:full|vid|img).pr0gramm.com.+\..+/
 // @version     2.0
 // @updateURL   https://github.com/jkhsjdhjs/pr0-stuff/raw/master/img_old_link_lookup.user.js
 // @downloadURL https://github.com/jkhsjdhjs/pr0-stuff/raw/master/img_old_link_lookup.user.js
@@ -16,6 +16,7 @@
  * 1.11: change update/download url
  * 1.12: change update/download url to v2.0 script
  * 2.0: complete rewrite without jquery
+ * 2.1: include full.pr0gramm.com
 */
 
 //CSS Spinner from http://tobiasahlin.com/spinkit/
