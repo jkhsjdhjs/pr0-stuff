@@ -4,9 +4,9 @@
 // @namespace   jkhsjdhjs
 // @description Optional redirect from IMG/VID links (img/vid.pr0gramm.com) to their respective post
 // @include     /^https?://(?:full|vid|img).pr0gramm.com.+\..+/
-// @version     2.1
-// @updateURL   https://github.com/jkhsjdhjs/pr0-stuff/raw/master/direct_link_reverse_lookup.user.js
-// @downloadURL https://github.com/jkhsjdhjs/pr0-stuff/raw/master/direct_link_reverse_lookup.user.js
+// @version     2.2
+// @updateURL   https://raw.githubusercontent.com/jkhsjdhjs/pr0-stuff/master/direct_link_reverse_lookup.user.js
+// @downloadURL https://raw.githubusercontent.com/jkhsjdhjs/pr0-stuff/master/direct_link_reverse_lookup.user.js
 // @icon        http://pr0gramm.com/media/pr0gramm-favicon.png
 // ==/UserScript==
 
@@ -17,6 +17,7 @@
  * 1.12: change update/download url to v2.0 script
  * 2.0: complete rewrite without jquery
  * 2.1: include full.pr0gramm.com
+ * 2.2: change arrow url from github.com to githubusercontent.com
 */
 
 //CSS Spinner from http://tobiasahlin.com/spinkit/
@@ -182,7 +183,7 @@ document.querySelector("head").insertAdjacentHTML("beforeend", `
 //insert html
 document.querySelector("body").insertAdjacentHTML("beforeend", `
     <a href="#" id="arrow">
-        <img title="go to post" src="https://github.com/jkhsjdhjs/pr0-stuff/raw/master/arrow.png">
+        <img title="go to post" src="https://raw.githubusercontent.com/jkhsjdhjs/pr0-stuff/master/arrow.png">
     </a>
     <div id="overlay" hidden>
         <div id="overlay-veil"></div>
