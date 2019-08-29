@@ -3,11 +3,13 @@
 // @author      jkhsjdhjs
 // @namespace   jkhsjdhjs
 // @description Optional redirect from IMG/VID links (img/vid.pr0gramm.com) to their respective post
-// @include     /^https?://(?:full|vid|img).pr0gramm.com.+\..+/
-// @version     2.2
+// @include     /^https?:\/\/(full|img|vid)\.pr0gramm\.com\/((?:\d+){4}\/(?:\d+){2}(?:\/(?:\d+){2})?\/.+\.([A-z0-9]{3,4}))$/
+// @version     2.3
 // @updateURL   https://raw.githubusercontent.com/jkhsjdhjs/pr0-stuff/master/direct_link_reverse_lookup.user.js
 // @downloadURL https://raw.githubusercontent.com/jkhsjdhjs/pr0-stuff/master/direct_link_reverse_lookup.user.js
 // @icon        http://pr0gramm.com/media/pr0gramm-favicon.png
+// @grant       GM_xmlhttpRequest
+// @connect     pr0gramm.com
 // ==/UserScript==
 
 /*Changelog:
@@ -18,6 +20,7 @@
  * 2.0: complete rewrite without jquery
  * 2.1: include full.pr0gramm.com
  * 2.2: change arrow url from github.com to githubusercontent.com
+ * 2.3: switch to pr0gramm reverse lookup api
 */
 
 //CSS Spinner from http://tobiasahlin.com/spinkit/
@@ -241,6 +244,18 @@ class Overlay {
     }
 }
 
+const GM_fetch = (url, options) => new Promise((resolve, reject) => {
+    const abort = GM_xmlhttpRequest({...options, ...{
+        url: url,
+        responseType: "json",
+        fetch: true,
+        onload: res => resolve(res),
+        onerror: err => reject(err)
+    }});
+    if(options.signal)
+        options.signal.onabort = () => abort.abort();
+});
+
 const overlay = new Overlay(
     document.querySelector("div#overlay"),
     document.querySelector("div#spinner"),
@@ -264,20 +279,23 @@ document.querySelector("a#arrow").addEventListener("click", async e => {
     overlay.status("fetching post...");
     overlay.show(true);
     try {
-        const res = await fetch("https://pr0.totally.rip/api/v2/item?file=" + location.href, {
+        const matches = location.href.match(/^https?:\/\/(full|img|vid)\.pr0gramm\.com\/((?:\d+){4}\/(?:\d+){2}(?:\/(?:\d+){2})?\/.+\.([A-z0-9]{3,4}))$/i);
+        if(!matches.length)
+            throw new Error("url doesn't match regex");
+        const path = matches[1] === "full" && matches[3] === "png"
+                   ? matches[2].slice(0, -3) + "jpg"
+                   : matches[2];
+        const response = await GM_fetch("https://pr0gramm.com/api/items/get?flags=15&tags=!p:" + path, {
             signal: abort.signal
         });
-        const json = await res.json();
-        if(json.error) {
-            if(json.error.msg === "no_results")
-                throw new Error("no post found, try again in 10 minutes");
-            else
-                throw new Error("an unexpected error occured");
-        }
-        if(!res.ok)
-            throw new Error("api error");
+        if(response.status !== 200)
+           throw new Error("api error");
+        const json = response.response;
+        if(json.error || !json.items.length)
+            throw new Error("no post found");
+        const item = json.items[0];
         overlay.success("redirecting...");
-        location.href = "//pr0gramm.com/new/" + json.data.id;
+        location.href = "//pr0gramm.com/" + (item.promoted ? "top" : "new") + "/" + item.id;
     }
     catch(error) {
         overlay.error(error);
