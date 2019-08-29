@@ -7,7 +7,7 @@
 // @version     2.3
 // @updateURL   https://raw.githubusercontent.com/jkhsjdhjs/pr0-stuff/master/direct_link_reverse_lookup.user.js
 // @downloadURL https://raw.githubusercontent.com/jkhsjdhjs/pr0-stuff/master/direct_link_reverse_lookup.user.js
-// @icon        http://pr0gramm.com/media/pr0gramm-favicon.png
+// @icon        https://pr0gramm.com/media/pr0gramm-favicon.png
 // @grant       GM_xmlhttpRequest
 // @connect     pr0gramm.com
 // ==/UserScript==
