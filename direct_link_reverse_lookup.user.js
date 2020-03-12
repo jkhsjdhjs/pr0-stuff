@@ -245,7 +245,7 @@ class Overlay {
 }
 
 const GM_fetch = (url, options) => new Promise((resolve, reject) => {
-    const abort = GM_xmlhttpRequest({...options, ...{
+    const request = GM_xmlhttpRequest({...options, ...{
         url: url,
         responseType: "json",
         fetch: true,
@@ -253,7 +253,7 @@ const GM_fetch = (url, options) => new Promise((resolve, reject) => {
         onerror: err => reject(err)
     }});
     if(options.signal)
-        options.signal.onabort = () => abort.abort();
+        options.signal.onabort = () => request.abort();
 });
 
 const overlay = new Overlay(
