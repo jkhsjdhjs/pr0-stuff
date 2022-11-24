@@ -3,8 +3,8 @@
 // @author      jkhsjdhjs
 // @namespace   jkhsjdhjs
 // @description Optional redirect from IMG/VID links (img/vid.pr0gramm.com) to their respective post
-// @include     /^https?:\/\/(full|img|vid)\.pr0gramm\.com\/((?:\d+){4}\/(?:\d+){2}(?:\/(?:\d+){2})?\/.+\.([A-z0-9]{3,4}))$/
-// @version     2.3
+// @include     /^https?:\/\/(full|img|images|vid|videos)\.pr0gramm\.com\/((?:\d+){4}\/(?:\d+){2}(?:\/(?:\d+){2})?\/.+\.([A-z0-9]{3,4}))$/
+// @version     2.4
 // @updateURL   https://raw.githubusercontent.com/jkhsjdhjs/pr0-stuff/master/direct_link_reverse_lookup.user.js
 // @downloadURL https://raw.githubusercontent.com/jkhsjdhjs/pr0-stuff/master/direct_link_reverse_lookup.user.js
 // @icon        https://pr0gramm.com/media/pr0gramm-favicon.png
@@ -21,6 +21,7 @@
  * 2.1: include full.pr0gramm.com
  * 2.2: change arrow url from github.com to githubusercontent.com
  * 2.3: switch to pr0gramm reverse lookup api
+ * 2.4: support {images,videos}.pr0gramm.com subdomains
 */
 
 //CSS Spinner from http://tobiasahlin.com/spinkit/
@@ -279,7 +280,7 @@ document.querySelector("a#arrow").addEventListener("click", async e => {
     overlay.status("fetching post...");
     overlay.show(true);
     try {
-        const matches = location.href.match(/^https?:\/\/(full|img|vid)\.pr0gramm\.com\/((?:\d+){4}\/(?:\d+){2}(?:\/(?:\d+){2})?\/.+\.([A-z0-9]{3,4}))$/i);
+        const matches = location.href.match(/^https?:\/\/(full|img|images|vid|videos)\.pr0gramm\.com\/((?:\d+){4}\/(?:\d+){2}(?:\/(?:\d+){2})?\/.+\.([A-z0-9]{3,4}))$/i);
         if(!matches.length)
             throw new Error("url doesn't match regex");
         const path = matches[1] === "full" && matches[3] === "png"
