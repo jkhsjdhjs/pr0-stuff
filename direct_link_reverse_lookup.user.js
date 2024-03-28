@@ -4,7 +4,7 @@
 // @namespace   jkhsjdhjs
 // @description Optional redirect from IMG/VID links (img/vid.pr0gramm.com) to their respective post
 // @include     /^https?:\/\/(full|img|images|vid|videos)\.pr0gramm\.com\/((?:\d+){4}\/(?:\d+){2}(?:\/(?:\d+){2})?\/.+\.([A-z0-9]{3,4}))$/
-// @version     2.4
+// @version     2.5
 // @updateURL   https://raw.githubusercontent.com/jkhsjdhjs/pr0-stuff/master/direct_link_reverse_lookup.user.js
 // @downloadURL https://raw.githubusercontent.com/jkhsjdhjs/pr0-stuff/master/direct_link_reverse_lookup.user.js
 // @icon        https://pr0gramm.com/media/pr0gramm-favicon.png
@@ -22,6 +22,7 @@
  * 2.2: change arrow url from github.com to githubusercontent.com
  * 2.3: switch to pr0gramm reverse lookup api
  * 2.4: support {images,videos}.pr0gramm.com subdomains
+ * 2.5: update flags to include pol
 */
 
 //CSS Spinner from http://tobiasahlin.com/spinkit/
@@ -286,7 +287,7 @@ document.querySelector("a#arrow").addEventListener("click", async e => {
         const path = matches[1] === "full" && matches[3] === "png"
                    ? matches[2].slice(0, -3) + "jpg"
                    : matches[2];
-        const response = await GM_fetch("https://pr0gramm.com/api/items/get?flags=15&tags=!p:" + path, {
+        const response = await GM_fetch("https://pr0gramm.com/api/items/get?flags=31&tags=!p:" + path, {
             signal: abort.signal
         });
         if(response.status !== 200)
